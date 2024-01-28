@@ -13,3 +13,6 @@ class Inventario(pygame.sprite.Sprite):
         self.body.x = x
         self.body.y = y
 
+
+
+  
