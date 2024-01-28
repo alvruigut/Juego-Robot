@@ -29,19 +29,25 @@ class Steve(pygame.sprite.Sprite):
         self.inventario=Inventario(0,0,{})
    
 
-    def move(self, dx, dy,ventana_horizontal,ventana_vertical,componentes,componente_dañinos):
+    def move(self, dx, dy,ventana_horizontal,ventana_vertical,muros,lava,agua):
         x = self.body.x
         y = self.body.y
         if 0 <= self.body.x + dx < ventana_horizontal - self.body.width:
             self.body.x += dx
         if 0 <= self.body.y + dy< ventana_vertical - self.body.height:
             self.body.y += dy
-        for componente in componentes:
+        for componente in muros:
             if self.collision_muro(componente.body):
                 self.body.x = x
                 self.body.y = y
-        for componente in componente_dañinos:
-            if self.collision_lava(componente.body) or self.collision_agua(componente.body):
+        for componente in lava:
+            if self.collision_lava(componente.body):
+                self.body.x = x
+                self.body.y = y
+                self.vida -= 1
+                time.sleep(0.2)
+        for componente in agua:
+            if self.collision_agua(componente.body):
                 self.body.x = x
                 self.body.y = y
                 self.vida -= 1

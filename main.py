@@ -28,7 +28,9 @@ fondo=pygame.transform.scale(foto_fondo, (tam_x_ventana,tam_y_ventana))
 
 steven=Steve(0,0)
 #Agua
+aguas=[]
 agua=Agua(540,327)
+aguas.append(agua)
 #Lava
 lavas=[]
 lava=Lava(0,0)
@@ -44,14 +46,8 @@ muros.append(muro)
 muros.append(muro2)
 #Evitar coordenadas a mejorar
 lista_componentes=[]
-componentes_dañinos=[]
-componentes_sin_dañar=[]
 coordenadas_evitar=[]
-componentes_sin_dañar.extend(muros)
-componentes_dañinos.extend(lavas)
-componentes_dañinos.append(agua)
-lista_componentes.extend(componentes_sin_dañar)
-lista_componentes.extend(componentes_dañinos)
+
 #Steven
 posicion_x_steven = random.randint(0, tam_x_ventana-steven.body.width)
 posicion_y_steven= random.randint(0, tam_y_ventana-steven.body.height)
@@ -125,7 +121,7 @@ while game_running:
         ventana.blit(manzana.image, manzana.body)
 
     ventana.blit(vida_texto, (10, 10))
-    ventana.blit(inventario_texto, (900, 10))
+    ventana.blit(inventario_texto, (150, 10))
     for tnt in tnts:
         ventana.blit(tnt.image, tnt.body)
         steven.coger_tnt(tnt,tnts)
@@ -140,39 +136,38 @@ while game_running:
 
     for lava in lavas:
         ventana.blit(lava.image, lava.body)
-        steven.collision_lava(lava.body)
     ventana.blit(agua.image, agua.body)
     ventana.blit(steven.image, steven.body)
 
     buttom_pressed = pygame.key.get_pressed()
     if buttom_pressed[K_LEFT]:
         if steven.enderman==False:
-            steven.move(-steven.velocidad,0,tam_x_ventana,tam_y_ventana,componentes_sin_dañar, componentes_dañinos)  # mover a la izquierda
+            steven.move(-steven.velocidad,0,tam_x_ventana,tam_y_ventana,muros,lavas,aguas)  # mover a la izquierda
             steven.image=pygame.transform.scale(sprite_steven[2], (steven.gorditura_steven-14, steven.altura_steven-3))
         else:
-            steven.move(-steven.velocidad,0,tam_x_ventana,tam_y_ventana,componentes_sin_dañar, componentes_dañinos)  # mover a la izquierda
+            steven.move(-steven.velocidad,0,tam_x_ventana,tam_y_ventana,muros,lavas,aguas)  # mover a la izquierda
             steven.image=pygame.transform.scale(sprite_enderman[2], (steven.gorditura_steven-14, steven.altura_steven-3))
     if buttom_pressed[K_RIGHT]:
         if steven.enderman==False:
-            steven.move(steven.velocidad, 0,tam_x_ventana,tam_y_ventana, componentes_sin_dañar, componentes_dañinos)  # mover a la derecha
+            steven.move(steven.velocidad, 0,tam_x_ventana,tam_y_ventana, muros,lavas,aguas)  # mover a la derecha
             steven.image=pygame.transform.scale(sprite_steven[3], (steven.gorditura_steven-10, steven.altura_steven-5))
         else:            
-            steven.move(steven.velocidad, 0,tam_x_ventana,tam_y_ventana,componentes_sin_dañar, componentes_dañinos)  # mover a la derecha
+            steven.move(steven.velocidad, 0,tam_x_ventana,tam_y_ventana,muros,lavas,aguas)  # mover a la derecha
             steven.image=pygame.transform.scale(sprite_enderman[2], (steven.gorditura_steven-10, steven.altura_steven-5))
 
     if buttom_pressed[K_UP]:
         if steven.enderman==False:
-            steven.move(0, -steven.velocidad,tam_x_ventana,tam_y_ventana,componentes_sin_dañar, componentes_dañinos)  # mover hacia arriba
+            steven.move(0, -steven.velocidad,tam_x_ventana,tam_y_ventana,muros,lavas,aguas)  # mover hacia arriba
             steven.image=pygame.transform.scale(sprite_steven[1], (steven.gorditura_steven, steven.altura_steven))
         else:
-            steven.move(0, -steven.velocidad,tam_x_ventana,tam_y_ventana,componentes_sin_dañar, componentes_dañinos)  # mover hacia arriba
+            steven.move(0, -steven.velocidad,tam_x_ventana,tam_y_ventana,muros,lavas,aguas)  # mover hacia arriba
             steven.image=pygame.transform.scale(sprite_enderman[1], (steven.gorditura_steven, steven.altura_steven))
     if buttom_pressed[K_DOWN]:
         if steven.enderman==False:
-            steven.move(0, steven.velocidad,tam_x_ventana,tam_y_ventana,componentes_sin_dañar, componentes_dañinos)  # mover hacia abajo
+            steven.move(0, steven.velocidad,tam_x_ventana,tam_y_ventana,muros,lavas,aguas)  # mover hacia abajo
             steven.image=pygame.transform.scale(sprite_steven[0], (steven.gorditura_steven, steven.altura_steven))
         else:
-            steven.move(0, steven.velocidad,tam_x_ventana,tam_y_ventana,componentes_sin_dañar, componentes_dañinos)  # mover hacia abajo
+            steven.move(0, steven.velocidad,tam_x_ventana,tam_y_ventana,muros,lavas,aguas)  # mover hacia abajo
             steven.image=pygame.transform.scale(sprite_enderman[0], (steven.gorditura_steven, steven.altura_steven))
 
     steven.comer_manzana_inventario()
@@ -180,7 +175,9 @@ while game_running:
     steven.poner_tnt(tnts,muros,4)
 
     font = pygame.font.Font(None, 36)
-    text = font.render("¿Estás seguro de que quieres salir? (s/n): ", True, (255, 255, 255))        
+    text = font.render("¿Estás seguro de que quieres salir? (s/n): ", True, (255, 255, 255)) 
+    instrucciones_texto = ["Mover: flechitas","Coger objetos: t","Cambiar enderman: p","Comer manzana: m","Comer manzana dorada: d","Poner TNT: b"]
+    instrucciones = [font.render(instruccion, True, (255, 255, 255)) for instruccion in instrucciones_texto]
     for event in pygame.event.get():
         if event.type == QUIT :
             game_running = False
@@ -198,17 +195,28 @@ while game_running:
                         volumen=pygame.transform.scale(foto_volumen, (50,50))
                         pygame.mixer.music.set_volume(0.5)
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_q:
+            if event.key == K_q:
                 ventana.blit(text, (tam_x_ventana/3, tam_y_ventana/3))
                 pygame.display.flip()
                 waiting = True
                 while waiting:
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN:
-                            if event.key == pygame.K_s:
+                            if event.key == K_s:
                                 pygame.quit()
-                            elif event.key == pygame.K_n:
+                            elif event.key == K_n:
                                 waiting = False
+        if event.type == pygame.KEYDOWN:
+            if event.key ==K_i:
+                for i, instruccion in enumerate(instrucciones):
+                    ventana.blit(instruccion, (50, 50 + i * 40))                
+                    pygame.display.flip()
+                mostrar_instrucciones = True
+                while mostrar_instrucciones:
+                    for event in pygame.event.get():
+                        if event.type == pygame.KEYDOWN:
+                            if event.key == K_i:
+                                mostrar_instrucciones = False
 
     if steven.vida <= 0:
         game_running = False
