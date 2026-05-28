@@ -4,6 +4,10 @@
 
 Juego-Robot es un juego desarrollado con Pygame que presenta una temática de Minecraft. En este juego, los jugadores pueden moverse y enfrentarse a diversos obstáculos, incluyendo muros, agua, lava, y TNT. El juego también incluye un sistema de inventario, objetos interactivos, y varias mecánicas de juego como el uso de perlas para atravesar agua y manzanas para restaurar vida.
 
+![Interfaz gráfica del proyecto](images/gui.png)
+![Interfaz gráfica del proyecto](images/gui2.png)
+
+
 ## Funcionalidades
 
 - **Movimiento del personaje**: Control del personaje principal para moverse por el mapa.
@@ -55,5 +59,6 @@ Para ejecutar Juego-Robot, necesitas tener instalados los siguientes programas y
 - **Inventario**: Presiona `I` para abrir el inventario y gestionar tus objetos.
 - **Perlas**: Utiliza las perlas recogidas para atravesar el agua.
 - **Lava**: Evita la lava para no perder vida.
+- **Slime**: Evita chocar con los muros de Slimes, no te dejarán pasar 
 - **Manzanas**: Recoge y usa manzanas para restaurar tu vida.
 - **TNT**: Interactúa con TNT para causar explosiones que pueden modificar el entorno.
